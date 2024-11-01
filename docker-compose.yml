@@ -1,0 +1,6 @@
+﻿services:
+  website:
+    image: website
+    build:
+      context: .
+      dockerfile: Website/Dockerfile
