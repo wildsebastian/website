@@ -4,6 +4,7 @@ module.exports = {
     relative: true,
     files: [
       "../Pages/**/*.cshtml",
+      "../Areas/**/*.cshtml",
     ]
   },
   theme: {
