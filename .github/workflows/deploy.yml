@@ -6,6 +6,30 @@ on:
       - 'main'
 
 jobs:
+  check_formatting:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Install dotnet-format tool
+        run: dotnet tool install -g dotnet-format
+
+      - name: Run dotnet format
+        run: dotnet format --verify-no-changes
+
+
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest

@@ -3,29 +3,99 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>@ViewData["Title"] - wildsebastian.eu</title>
+  <title>wildsebastian.eu - @ViewData["Title"]</title>
   <link rel="stylesheet" href="~/css/all.min.css" asp-append-version="true"/>
   <link rel="stylesheet" href="~/css/app.css" asp-append-version="true"/>
+  <script>
+    document.documentElement.classList.toggle(
+      'dark',
+      localStorage.theme === 'dark'
+      || (
+        !('theme' in localStorage)
+        && window.matchMedia('(prefers-color-scheme: dark)').matches
+      )
+    )
+  </script>
 </head>
-<body class="flex flex-col h-screen justify-between">
-
-<header class="container mx-auto max-w-screen-md pr-4 pl-4 mt-4">
-  <a href="/">
-    <h1 class="text-4xl">Sebastian Wild</h1>
-  </a>
-</header>
-
-<main class="container mx-auto max-w-screen-md mb-auto mt-8 pr-2 pl-2">
+<body class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-black dark:text-gray-200">
+<div
+  class="mx-auto max-w-5xl flex flex-col w-full justify-between gap-y-32 h-full min-h-screen border-x bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-600">
   <div class="flex flex-col">
-    @RenderBody()
-  </div>
-</main>
+    <header
+      class="flex flex-row gap-x-8 items-center justify-center mx-auto max-w-3xl min-w-32 h-10 px-6 mt-4 rounded-full shadow-md dark:bg-slate-800">
+      <a asp-page="/Index">
+        <p class="dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">Home</p>
+      </a>
+      @if ((int) (ViewData["BlogPostCount"] ?? 0) > 0)
+      {
+        <a asp-page="/Blog/Index" asp-route-slug="">
+          <p class="dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">Articles</p>
+        </a>
+      }
+      <a id="theme-switcher" class="cursor-pointer"></a>
+    </header>
 
-<footer class="container mx-auto max-w-screen-md pr-4 pl-4 mb-4">
-  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-    <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
-  </a>
-</footer>
+    <main class="mt-16 px-4">
+      <div class="flex flex-col">
+        @RenderBody()
+      </div>
+    </main>
+  </div>
+
+  <footer class="mb-8">
+    <div
+      class="mt-16 px-4 border-t border-gray-900/10 pt-8 sm:mt-20 md:flex md:items-center md:justify-between lg:mt-24mx-auto">
+      <div class="flex gap-x-4 md:order-2">
+        <a href="https://github.com/wildsebastian" class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-300" target="_blank">
+          <i class="fab fa-github fa-lg m-2"></i>
+        </a>
+        <a href="https://gitlab.com/wildsebastian" class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-300" target="_blank">
+          <i class="fab fa-gitlab fa-lg m-2"></i>
+        </a>
+        <a href="mailto:me@wildsebastian.eu" class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-300" target="_blank">
+          <i class="fas fa-envelope fa-lg m-2"></i>
+        </a>
+      </div>
+      <p class="mt-8 text-sm/6 text-gray-600 dark:text-gray-400 md:order-1 md:mt-0">&copy; @DateTime.Now.Year Sebastian Wild. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
 @await RenderSectionAsync("Scripts", required: false)
+<script>
+  let themeSwitcher = document.getElementById('theme-switcher')
+  let highlightJsTheme = document.getElementById('highlight-theme');
+
+  function toggleThemeSvg() {
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      let sun_svg = new DOMParser().parseFromString(
+        '<svg xmlns="http://www.w3.org/2000/svg" class="size-6 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />' +
+        '</svg>',
+        'application/xml'
+      )
+      themeSwitcher.innerHTML = ''
+      themeSwitcher.appendChild(sun_svg.documentElement)
+      highlightJsTheme.href = "/js/highlightjs/cdn-assets/styles/dark.min.css";
+    } else {
+      let moon_svg = new DOMParser().parseFromString(
+        '<svg xmlns="http://www.w3.org/2000/svg" class="size-6 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />' +
+        '</svg>',
+        'application/xml'
+      )
+      themeSwitcher.innerHTML = ''
+      themeSwitcher.appendChild(moon_svg.documentElement)
+      highlightJsTheme.href = "/js/highlightjs/cdn-assets/styles/default.min.css";
+    }
+  }
+
+  themeSwitcher.addEventListener('click', function () {
+    document.documentElement.classList.toggle('dark')
+    localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+    toggleThemeSvg()
+  })
+
+  toggleThemeSvg()
+</script>
 </body>
 </html>

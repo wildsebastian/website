@@ -1,0 +1,73 @@
+@page "{slug?}"
+@model Website.Pages.Blog.Index
+@{
+  ViewData["Title"] = Model.BlogPost != null ? $"Articles - {@Model.BlogPost.Title}" : "Articles";
+}
+
+@if (Model.BlogPost == null)
+{
+  <div class="py-4">
+    <h1 class="text-pretty text-4xl font-semibold tracking-tight">Thoughts about my current interests</h1>
+    <div class="flex flex-col mt-4 gap-y-6 border-t border-gray-200">
+      @foreach (var post in Model.BlogPosts)
+      {
+        <article class="flex mt-4 flex-col items-start justify-between">
+          <div class="flex items-center text-xs">
+            <time datetime="2020-03-16">@Html.DisplayFor(modelItem => post.PublishedAt)</time>
+          </div>
+          <div class="relative mt-2">
+            <a asp-page="/Blog/Index" asp-route-slug="@post.Slug">
+              <h3 class="text-lg/6 font-semibold">
+                @Html.DisplayFor(modelItem => post.Title)
+              </h3>
+              <p class="mt-3 text-sm/6">@Html.DisplayFor(modelItem => post.Abstract)</p>
+            </a>
+          </div>
+          <div class="relative mt-2 flex items-center">
+            <div class="text-sm/6">
+              <p class="font-semibold">
+                <span class="absolute inset-0"></span>
+                @if (post.Author != null)
+                {
+                  @Html.DisplayFor(modelItem => post.Author.FirstName)
+                  @Html.DisplayFor(modelItem => post.Author.LastName)
+                }
+              </p>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+}
+else
+{
+  <article>
+    <div class="py-4">
+      <div class="text-base/7">
+        <h1 class="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">
+          @Html.DisplayFor(model => model.BlogPost!.Title)
+        </h1>
+        <div class="flex flex-row space-x-2 mt-2 text-gray-500">
+          <span>
+            @Html.DisplayFor(model => model.BlogPost!.Author!.FirstName) @Html.DisplayFor(model => model.BlogPost!.Author!.LastName)
+          </span>
+          &nbsp; -
+          <span>
+            @Html.DisplayFor(model => model.BlogPost!.PublishedAt)
+          </span>
+        </div>
+        <div id="article" class="flex flex-col space-y-3 mt-6 prose prose-lg max-w-none">
+          @Html.Raw(Model.BlogPost.ContentHtml)
+        </div>
+      </div>
+    </div>
+    <script src="/js/mathjax/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <link id="highlight-theme" rel="stylesheet" href="/js/highlightjs/cdn-assets/styles/default.min.css">
+    <script src="/js/highlightjs/cdn-assets/highlight.min.js"></script>
+    <script src="/js/highlightjs/cdn-assets/languages/haskell.min.js"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+  </article>
+}

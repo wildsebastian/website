@@ -1,18 +1,24 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using NodaTime;
+using Website.Database;
 
 namespace Website.Pages;
 
-public class IndexModel : PageModel
+public class IndexModel(ApplicationDbContext context) : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    public IList<BlogPost> BlogPosts { get; set; } = null!;
 
-    public IndexModel(ILogger<IndexModel> logger)
+    public async Task<IActionResult> OnGetAsync()
     {
-        _logger = logger;
-    }
-
-    public void OnGet()
-    {
+        var now = Instant.FromDateTimeUtc(DateTime.UtcNow);
+        BlogPosts = await context.BlogPosts
+          .Include(post => post.Author)
+          .Where(post => post.PublishedAt <= now)
+          .OrderByDescending(post => post.PublishedAt)
+          .Take(5)
+          .ToListAsync();
+        return Page();
     }
 }
