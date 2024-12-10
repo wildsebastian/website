@@ -1,0 +1,65 @@
+﻿@page
+@model Website.Areas.Admin.Pages.Account.Manage.IndexModel
+@{
+  ViewData["Title"] = "Profile";
+}
+
+<h1 class="text-3xl font-bold tracking-tight text-gray-900">@ViewData["Title"]</h1>
+<div class="row mt-6">
+  <partial name="_StatusMessage" for="StatusMessage"/>
+  <div class="col-md-6">
+    <form id="profile-form" method="post">
+      <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+      <div>
+        <label asp-for="Username" for="username" class="block text-sm/6 font-medium text-gray-900">Username</label>
+        <div class="mt-2">
+          <input
+            type="text"
+            asp-for="Username"
+            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+            placeholder="Please choose your username."
+            disabled>
+        </div>
+      </div>
+      <div class="mt-4">
+        <label asp-for="Input.FirstName" for="first_name" class="block text-sm/6 font-medium text-gray-900">First name</label>
+        <div class="mt-2">
+          <input
+            asp-for="Input.FirstName"
+            type="tel"
+            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+            placeholder="Please enter your first name.">
+        </div>
+        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+      </div>
+      <div class="mt-4">
+        <label asp-for="Input.LastName" for="last_name" class="block text-sm/6 font-medium text-gray-900">Last name</label>
+        <div class="mt-2">
+          <input
+            asp-for="Input.LastName"
+            type="tel"
+            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+            placeholder="Please enter your last name.">
+        </div>
+        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+      </div>
+      <div class="mt-4">
+        <label asp-for="Input.PhoneNumber" for="phone" class="block text-sm/6 font-medium text-gray-900">Phone number</label>
+        <div class="mt-2">
+          <input
+            asp-for="Input.PhoneNumber"
+            type="tel"
+            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+            placeholder="Please enter your phone number.">
+        </div>
+        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+      </div>
+      <button
+        id="update-profile-button"
+        type="submit"
+        class="mt-4 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+        Save
+      </button>
+    </form>
+  </div>
+</div>

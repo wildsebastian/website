@@ -1,0 +1,32 @@
+﻿@page
+@model Website.Areas.Admin.Pages.Account.ExternalLoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<h2 class="text-3xl">Associate your @Model.ProviderDisplayName account.</h2>
+<hr />
+
+<p id="external-login-description">
+    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
+    Please enter an email address for this site below and click the Register button to finish
+    logging in.
+</p>
+
+<div>
+    <div>
+      <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <label asp-for="Input.Email" for="email" class="block text-sm/6 font-medium text-gray-900">Email</label>
+        <div class="relative mt-2 rounded-md shadow-sm">
+          <input asp-for="Input.Email" type="email" name="email" id="email" class="block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm/6" placeholder="you@example.com" value="adamwathan" aria-invalid="true" aria-describedby="email-error">
+          <div asp-validation-summary="ModelOnly" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+            <svg class="size-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        </div>
+        <div asp-validation-summary="ModelOnly" role="alert" class="mt-2 text-sm text-red-600" ></div>
+        <button type="submit" class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Register</button>
+      </form>
+    </div>
+</div>

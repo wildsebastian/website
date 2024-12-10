@@ -4,5 +4,9 @@
   },
   "scripts": {
     "build": "npx tailwindcss -i ./input.css -o ../wwwroot/css/app.css --watch"
+  },
+  "dependencies": {
+    "@highlightjs/cdn-assets": "^11.11.1",
+    "mathjax": "^3.2.2"
   }
 }
