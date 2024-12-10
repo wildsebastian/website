@@ -4,7 +4,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    reviewers:
+      - "wildsebastian"
   - package-ecosystem: "npm"
     directory: "/Website/Frontend"
     schedule:
       interval: "weekly"
+    reviewers:
+      - "wildsebastian"
