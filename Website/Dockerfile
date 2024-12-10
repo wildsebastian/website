@@ -11,6 +11,8 @@ COPY . .
 WORKDIR /app/Website/Frontend
 RUN npm install
 RUN npx tailwindcss -i ./input.css -o ../../app.css
+RUN cp -r node_modules/mathjax ../wwwroot/js
+RUN cp -r node_modules/@highlightjs/ ../wwwroot/js/highlightjs
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
