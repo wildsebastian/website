@@ -36,7 +36,8 @@ namespace Website.Controllers
         .SetClaim(ClaimTypes.NameIdentifier, result.Principal.GetClaim(ClaimTypes.NameIdentifier));
 
       // Preserve the registration identifier to be able to resolve it later.
-      identity.SetClaim(OpenIddictConstants.Claims.Private.RegistrationId, result.Principal.GetClaim(OpenIddictConstants.Claims.Private.RegistrationId));
+      identity.SetClaim(OpenIddictConstants.Claims.Private.RegistrationId,
+        result.Principal.GetClaim(OpenIddictConstants.Claims.Private.RegistrationId));
 
       // Build the authentication properties based on the properties that were added when the challenge was triggered.
       var properties = new AuthenticationProperties(result.Properties.Items)
@@ -51,7 +52,8 @@ namespace Website.Controllers
         // Preserve the access, identity and refresh tokens returned in the token response, if available.
         OpenIddictClientAspNetCoreConstants.Tokens.BackchannelAccessToken or
         OpenIddictClientAspNetCoreConstants.Tokens.BackchannelIdentityToken or
-        OpenIddictClientAspNetCoreConstants.Tokens.RefreshToken));
+        OpenIddictClientAspNetCoreConstants.Tokens.RefreshToken)
+      );
 
       // Ask the default sign-in handler to return a new cookie and redirect the
       // user agent to the return URL stored in the authentication properties.

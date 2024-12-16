@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Website.Data;
 
-public class ApplicationDbContext : IdentityDbContext
+public class ApplicationDbContext : IdentityDbContext<Author>
 {
   public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : base(options)
