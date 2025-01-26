@@ -1,9 +1,10 @@
 {
   "devDependencies": {
-    "tailwindcss": "^3.4"
+    "@tailwindcss/cli": "^4",
+    "tailwindcss": "^4"
   },
   "scripts": {
-    "build": "npx tailwindcss -i ./input.css -o ../wwwroot/css/app.css --watch"
+    "build": "npx @tailwindcss/cli -i ./input.css -o ../wwwroot/css/app.css --watch"
   },
   "dependencies": {
     "@highlightjs/cdn-assets": "^11.11.1",

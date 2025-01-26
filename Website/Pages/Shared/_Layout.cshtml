@@ -75,7 +75,9 @@
       )
       themeSwitcher.innerHTML = ''
       themeSwitcher.appendChild(sun_svg.documentElement)
-      highlightJsTheme.href = "/js/highlightjs/cdn-assets/styles/dark.min.css";
+      if (highlightJsTheme) {
+        highlightJsTheme.href = "/js/highlightjs/cdn-assets/styles/dark.min.css";
+      }
     } else {
       let moon_svg = new DOMParser().parseFromString(
         '<svg xmlns="http://www.w3.org/2000/svg" class="size-6 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">' +
@@ -85,7 +87,9 @@
       )
       themeSwitcher.innerHTML = ''
       themeSwitcher.appendChild(moon_svg.documentElement)
-      highlightJsTheme.href = "/js/highlightjs/cdn-assets/styles/default.min.css";
+      if (highlightJsTheme) {
+        highlightJsTheme.href = "/js/highlightjs/cdn-assets/styles/default.min.css";
+      }
     }
   }
 
