@@ -9,7 +9,7 @@ ENV NODE_ENV=production
 WORKDIR /app
 COPY . .
 WORKDIR /app/Website/Frontend
-RUN npm install
+RUN npm install --include dev
 RUN npx tailwindcss -i ./input.css -o ../../app.css
 RUN cp -r node_modules/mathjax ../wwwroot/js
 RUN cp -r node_modules/@highlightjs/ ../wwwroot/js/highlightjs
