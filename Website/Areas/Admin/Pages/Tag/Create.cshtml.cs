@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Website.Database;
 
 namespace Website.Areas.Admin.Pages.Tag
 {
-    public class CreateModel(Website.Database.ApplicationDbContext context) : PageModel
+    public class CreateModel(ApplicationDbContext context) : PageModel
     {
         public IActionResult OnGet()
         {
