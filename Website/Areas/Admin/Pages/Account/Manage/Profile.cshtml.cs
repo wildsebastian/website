@@ -62,9 +62,9 @@ namespace Website.Areas.Admin.Pages.Account.Manage
 
         private async Task LoadAsync(Author user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            var dbUser = await _userManager.FindByNameAsync(userName);
+            string userName = await _userManager.GetUserNameAsync(user);
+            string phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            Author dbUser = await _userManager.FindByNameAsync(userName ?? string.Empty);
 
             Username = userName;
 
