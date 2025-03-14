@@ -72,7 +72,7 @@ namespace Website.Areas.Admin.Pages.Account
             /// </summary>
             [Required]
             [EmailAddress]
-            public string Email { get; set; }
+            public string Email { get; init; }
         }
 
         public IActionResult OnGet() => RedirectToPage("./Login");
@@ -87,7 +87,7 @@ namespace Website.Areas.Admin.Pages.Account
 
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
@@ -129,9 +129,9 @@ namespace Website.Areas.Admin.Pages.Account
 
         public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
             // Get the information about the user from the external login provider
-            var info = await _signInManager.GetExternalLoginInfoAsync();
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 ErrorMessage = "Error loading external login information during confirmation.";
@@ -140,12 +140,12 @@ namespace Website.Areas.Admin.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                Author user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
-                var result = await _userManager.CreateAsync(user);
+                IdentityResult result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     result = await _userManager.AddLoginAsync(user, info);
@@ -156,14 +156,14 @@ namespace Website.Areas.Admin.Pages.Account
                         // If account confirmation is required, we need to show the link if we don't have a real email sender
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
-                            return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
+                            return RedirectToPage("./RegisterConfirmation", new { Input.Email });
                         }
 
                         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
                         return LocalRedirect(returnUrl);
                     }
                 }
-                foreach (var error in result.Errors)
+                foreach (IdentityError error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -174,7 +174,7 @@ namespace Website.Areas.Admin.Pages.Account
             return Page();
         }
 
-        private Author CreateUser()
+        private static Author CreateUser()
         {
             try
             {

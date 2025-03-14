@@ -3,7 +3,6 @@
 
 #nullable disable
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,19 +11,11 @@ using Website.Database;
 
 namespace Website.Areas.Admin.Pages.Account.Manage
 {
-    public class IndexModel : PageModel
+    public class IndexModel(
+        UserManager<Author> userManager,
+        SignInManager<Author> signInManager)
+        : PageModel
     {
-        private readonly UserManager<Author> _userManager;
-        private readonly SignInManager<Author> _signInManager;
-
-        public IndexModel(
-          UserManager<Author> userManager,
-          SignInManager<Author> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
-
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -51,20 +42,20 @@ namespace Website.Areas.Admin.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
-            [Display(Name = "First name")] public string FirstName { get; set; }
+            [Display(Name = "First name")] public string FirstName { get; init; }
 
-            [Display(Name = "Last name")] public string LastName { get; set; }
+            [Display(Name = "Last name")] public string LastName { get; init; }
 
             [Phone]
             [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            public string PhoneNumber { get; init; }
         }
 
         private async Task LoadAsync(Author user)
         {
-            string userName = await _userManager.GetUserNameAsync(user);
-            string phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            Author dbUser = await _userManager.FindByNameAsync(userName ?? string.Empty);
+            string userName = await userManager.GetUserNameAsync(user);
+            string phoneNumber = await userManager.GetPhoneNumberAsync(user);
+            Author dbUser = await userManager.FindByNameAsync(userName ?? string.Empty);
 
             Username = userName;
 
@@ -78,10 +69,10 @@ namespace Website.Areas.Admin.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
 
             await LoadAsync(user);
@@ -90,10 +81,10 @@ namespace Website.Areas.Admin.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -102,10 +93,10 @@ namespace Website.Areas.Admin.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var phoneNumber = await userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                var setPhoneResult = await userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
@@ -118,7 +109,7 @@ namespace Website.Areas.Admin.Pages.Account.Manage
             if (Input.FirstName != user.FirstName)
             {
                 user.FirstName = Input.FirstName;
-                var updateResult = await _userManager.UpdateAsync(user);
+                var updateResult = await userManager.UpdateAsync(user);
                 if (!updateResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to update the first name.";
@@ -129,7 +120,7 @@ namespace Website.Areas.Admin.Pages.Account.Manage
             if (Input.LastName != user.LastName)
             {
                 user.LastName = Input.LastName;
-                var updateResult = await _userManager.UpdateAsync(user);
+                var updateResult = await userManager.UpdateAsync(user);
                 if (!updateResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to update the last name.";
@@ -137,7 +128,7 @@ namespace Website.Areas.Admin.Pages.Account.Manage
                 }
             }
 
-            await _signInManager.RefreshSignInAsync(user);
+            await signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }

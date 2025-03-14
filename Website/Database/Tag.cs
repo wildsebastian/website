@@ -7,8 +7,8 @@ namespace Website.Database;
 public class Tag
 {
     [Key]
-    public Guid Id { get; set; } = Guid.CreateVersion7();
-    public string Name { get; set; } = null!;
+    public Guid Id { get; init; } = Guid.CreateVersion7();
+    public string Name { get; init; } = null!;
     public List<BlogPostTag> BlogPostTags { get; } = [];
     public List<BlogPost> BlogPosts { get; } = [];
 }

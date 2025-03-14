@@ -2,18 +2,18 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
 using OpenIddict.Client.AspNetCore;
-using System.Diagnostics;
 using System.Security.Claims;
 
 namespace Website.Controllers
 {
+    [Route("/callback/login/{provider}")]
     public class OidcCallback : Controller
     {
-        [HttpGet("~/callback/login/{provider}"), HttpPost("~/callback/login/{provider}"), IgnoreAntiforgeryToken]
-        public async Task<ActionResult> LogInCallback()
+        [HttpGet(""), HttpPost(""), IgnoreAntiforgeryToken]
+        public async Task<ActionResult> LogInCallback(string provider)
         {
             // Retrieve the authorization data validated by OpenIddict as part of the callback handling.
-            var result = await HttpContext.AuthenticateAsync(OpenIddictClientAspNetCoreDefaults.AuthenticationScheme);
+            AuthenticateResult result = await HttpContext.AuthenticateAsync(OpenIddictClientAspNetCoreDefaults.AuthenticationScheme);
 
             // Important: if the remote server doesn't support OpenID Connect and doesn't expose a userinfo endpoint,
             // result.Principal.Identity will represent an unauthenticated identity and won't contain any user claim.
@@ -21,13 +21,13 @@ namespace Website.Controllers
             // Such identities cannot be used as-is to build an authentication cookie in ASP.NET Core (as the
             // antiforgery stack requires at least a name claim to bind CSRF cookies to the user's identity) but
             // the access/refresh tokens can be retrieved using result.Properties.GetTokens() to make API calls.
-            if (result.Principal is not ClaimsPrincipal { Identity.IsAuthenticated: true })
+            if (result.Principal is not { Identity.IsAuthenticated: true })
             {
                 throw new InvalidOperationException("The external authorization data cannot be used for authentication.");
             }
 
             // Build an identity based on the external claims and that will be used to create the authentication cookie.
-            var identity = new ClaimsIdentity(authenticationType: "ExternalLogin");
+            ClaimsIdentity identity = new ClaimsIdentity(authenticationType: "ExternalLogin");
 
             // By default, OpenIddict will automatically try to map the email/name and name identifier claims from
             // their standard OpenID Connect or provider-specific equivalent, if available. If needed, additional
@@ -41,7 +41,7 @@ namespace Website.Controllers
               result.Principal.GetClaim(OpenIddictConstants.Claims.Private.RegistrationId));
 
             // Build the authentication properties based on the properties that were added when the challenge was triggered.
-            var properties = new AuthenticationProperties(result.Properties?.Items ?? throw new InvalidOperationException())
+            AuthenticationProperties properties = new AuthenticationProperties(result.Properties?.Items ?? throw new InvalidOperationException())
             {
                 RedirectUri = result.Properties.RedirectUri ?? "/Identity/Account/Manage"
             };

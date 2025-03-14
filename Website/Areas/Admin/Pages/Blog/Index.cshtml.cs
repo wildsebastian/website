@@ -6,7 +6,7 @@ namespace Website.Areas.Admin.Pages.Blog
 {
     public class IndexModel(ApplicationDbContext context) : PageModel
     {
-        public IList<BlogPost> BlogPosts { get; set; } = default!;
+        public IList<BlogPost> BlogPosts { get; set; } = null!;
 
         public async Task OnGetAsync()
         {

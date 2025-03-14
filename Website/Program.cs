@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Website.Database;
-using Website.Database.ModelBinder;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                       throw new InvalidOperationException(
-                           "Connection string 'DefaultConnection' not found.");
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+                          throw new InvalidOperationException(
+                              "Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -25,8 +24,8 @@ builder.Services.AddIdentity<Author, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-var gitHubClientId = builder.Configuration.GetValue<string>("GitHub:ClientId", "");
-var githubClientSecret = builder.Configuration.GetValue<string>("GitHub:ClientSecret", "");
+string gitHubClientId = builder.Configuration.GetValue<string>("GitHub:ClientId", "");
+string githubClientSecret = builder.Configuration.GetValue<string>("GitHub:ClientSecret", "");
 
 builder.Services.AddOpenIddict()
     .AddCore(options =>
@@ -86,7 +85,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
         ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 });
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -113,4 +112,4 @@ app.MapStaticAssets();
 app.MapRazorPages()
     .WithStaticAssets();
 
-app.Run();
+await app.RunAsync();

@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NodaTime;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,21 +10,21 @@ namespace Website.Database
     [Index(nameof(Slug), IsUnique = true)]
     public class BlogPost
     {
-        [Key] public Guid Id { get; set; } = Guid.CreateVersion7();
+        [Key] public Guid Id { get; init; } = Guid.CreateVersion7();
 
         [Display(Name = "Author")]
         [ForeignKey("Author")]
-        public string? AuthorId { get; set; }
+        public string? AuthorId { get; init; }
 
-        public Author? Author { get; set; }
+        public Author? Author { get; init; }
 
-        [Display(Name = "Slug")] public string Slug { get; set; } = null!;
+        [Display(Name = "Slug")] public string Slug { get; init; } = null!;
 
-        [Display(Name = "Title")] public string Title { get; set; } = null!;
+        [Display(Name = "Title")] public string Title { get; init; } = null!;
 
-        [Display(Name = "Abstract")] public string? Abstract { get; set; }
+        [Display(Name = "Abstract")] public string? Abstract { get; init; }
 
-        [Display(Name = "Content")] public string? Content { get; set; }
+        [Display(Name = "Content")] public string? Content { get; init; }
 
         public string? ContentHtml { get; set; }
 
@@ -37,10 +35,10 @@ namespace Website.Database
         public Instant CreatedAt { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}", ApplyFormatInEditMode = true)]
-        public Instant UpdatedAt { get; set; } = Instant.FromDateTimeUtc(DateTime.UtcNow);
+        public Instant UpdatedAt { get; init; } = Instant.FromDateTimeUtc(DateTime.UtcNow);
 
         [ModelBinder(BinderType = typeof(InstantModelBinder))]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = false)]
-        public Instant? PublishedAt { get; set; }
+        public Instant? PublishedAt { get; init; }
     }
 }

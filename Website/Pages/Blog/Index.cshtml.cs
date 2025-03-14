@@ -9,7 +9,7 @@ namespace Website.Pages.Blog;
 public class Index(ApplicationDbContext context) : PageModel
 {
     public IList<BlogPost> BlogPosts { get; set; } = null!;
-    public BlogPost? BlogPost { get; set; } = null!;
+    public BlogPost? BlogPost { get; set; }
 
     public async Task<IActionResult> OnGetAsync(string? slug)
     {
