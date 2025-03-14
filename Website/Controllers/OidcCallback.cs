@@ -12,6 +12,11 @@ namespace Website.Controllers
         [HttpGet(""), HttpPost(""), IgnoreAntiforgeryToken]
         public async Task<ActionResult> LogInCallback(string provider)
         {
+            if (string.IsNullOrEmpty(provider) || !provider.Equals("github", StringComparison.CurrentCultureIgnoreCase))
+            {
+                throw new InvalidDataException("Invalid provider.");
+            }
+
             // Retrieve the authorization data validated by OpenIddict as part of the callback handling.
             AuthenticateResult result = await HttpContext.AuthenticateAsync(OpenIddictClientAspNetCoreDefaults.AuthenticationScheme);
 
@@ -27,7 +32,7 @@ namespace Website.Controllers
             }
 
             // Build an identity based on the external claims and that will be used to create the authentication cookie.
-            ClaimsIdentity identity = new ClaimsIdentity(authenticationType: "ExternalLogin");
+            ClaimsIdentity identity = new(authenticationType: "ExternalLogin");
 
             // By default, OpenIddict will automatically try to map the email/name and name identifier claims from
             // their standard OpenID Connect or provider-specific equivalent, if available. If needed, additional
@@ -41,7 +46,7 @@ namespace Website.Controllers
               result.Principal.GetClaim(OpenIddictConstants.Claims.Private.RegistrationId));
 
             // Build the authentication properties based on the properties that were added when the challenge was triggered.
-            AuthenticationProperties properties = new AuthenticationProperties(result.Properties?.Items ?? throw new InvalidOperationException())
+            AuthenticationProperties properties = new(result.Properties?.Items ?? throw new InvalidOperationException())
             {
                 RedirectUri = result.Properties.RedirectUri ?? "/Identity/Account/Manage"
             };

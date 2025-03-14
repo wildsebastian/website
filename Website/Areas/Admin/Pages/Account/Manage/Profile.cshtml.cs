@@ -42,6 +42,17 @@ namespace Website.Areas.Admin.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
+            public InputModel()
+            {
+            }
+
+            public InputModel(string firstName, string lastName, string phoneNumber)
+            {
+                FirstName = firstName;
+                LastName = lastName;
+                PhoneNumber = phoneNumber;
+            }
+
             [Display(Name = "First name")] public string FirstName { get; init; }
 
             [Display(Name = "Last name")] public string LastName { get; init; }
@@ -59,12 +70,7 @@ namespace Website.Areas.Admin.Pages.Account.Manage
 
             Username = userName;
 
-            Input = new InputModel
-            {
-                FirstName = dbUser.FirstName,
-                LastName = dbUser.LastName,
-                PhoneNumber = phoneNumber
-            };
+            Input = new InputModel(firstName: dbUser?.FirstName, lastName: dbUser?.LastName, phoneNumber: phoneNumber);
         }
 
         public async Task<IActionResult> OnGetAsync()

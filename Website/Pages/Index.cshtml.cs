@@ -12,7 +12,7 @@ public class IndexModel(ApplicationDbContext context) : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var now = Instant.FromDateTimeUtc(DateTime.UtcNow);
+        Instant now = Instant.FromDateTimeUtc(DateTime.UtcNow);
         BlogPosts = await context.BlogPosts
           .Include(post => post.Author)
           .Where(post => post.PublishedAt <= now)

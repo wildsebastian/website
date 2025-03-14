@@ -42,9 +42,9 @@ builder.Services.AddOpenIddict()
             .EnableRedirectionEndpointPassthrough();
         options.UseSystemNetHttp();
         options.UseWebProviders()
-            .AddGitHub(options =>
+            .AddGitHub(githubOptions =>
             {
-                options.SetClientId(gitHubClientId)
+                githubOptions.SetClientId(gitHubClientId)
                     .SetClientSecret(githubClientSecret)
                     .SetRedirectUri("callback/login/github");
             });

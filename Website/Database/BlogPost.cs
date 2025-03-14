@@ -28,8 +28,8 @@ namespace Website.Database
 
         public string? ContentHtml { get; set; }
 
-        public List<BlogPostTag> BlogPostTags { get; } = [];
-        public List<Tag> Tags { get; } = [];
+        public List<BlogPostTag> BlogPostTags { get; } = new() { };
+        public List<Tag> Tags { get; } = new() { };
 
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public Instant CreatedAt { get; set; }
