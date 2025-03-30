@@ -59,6 +59,69 @@ resource "scaleway_rdb_instance" "website_database" {
   }
 }
 
+resource "scaleway_rdb_acl" "main" {
+  instance_id = scaleway_rdb_instance.website_database.id
+  acl_rules {
+    ip = "62.210.0.0/16"
+    description = "Scaleway public ips"
+  }
+
+  acl_rules {
+    ip = "195.154.0.0/16"
+    description = "Scaleway public ips"
+  }
+
+  acl_rules {
+    ip = "212.129.0.0/18"
+    description = "Scaleway public ips"
+  }
+
+  acl_rules {
+    ip = "62.4.0.0/19"
+    description = "Scaleway public ips"
+  }
+
+  acl_rules {
+    ip = "212.83.128.0/19"
+    description = "Scaleway public ips"
+  }
+
+  acl_rules {
+    ip = "212.83.160.0/19"
+    description = "Scaleway public ips"
+  }
+
+  acl_rules {
+    ip = "212.47.224.0/19"
+    description = "Scaleway public ips"
+  }
+
+  acl_rules {
+    ip = "163.172.0.0/16"
+    description = "Scaleway public ips"
+  }
+
+  acl_rules {
+    ip = "51.15.0.0/16"
+    description = "Scaleway public ips"
+  }
+
+  acl_rules {
+    ip = "151.115.0.0/16"
+    description = "Scaleway public ips"
+  }
+
+  acl_rules {
+    ip = "51.158.0.0/15"
+    description = "Scaleway public ips"
+  }
+
+  acl_rules {
+    ip = "2001:bc8::/32"
+    description = "Scaleway public ips"
+  }
+}
+
 resource "scaleway_rdb_database" "website_database_website" {
   instance_id    = scaleway_rdb_instance.website_database.id
   name           = "website"
@@ -74,7 +137,7 @@ resource "scaleway_container" "website_container" {
   description = "My personal website web container"
   namespace_id = scaleway_container_namespace.website_container_namespace.id
   registry_image = "${scaleway_registry_namespace.website_registry.endpoint}/website:latest"
-  port = 8000
+  port = 8080
   cpu_limit = 512
   memory_limit = 1024
   min_scale = 1
