@@ -57,6 +57,7 @@ resource "scaleway_rdb_instance" "website_database" {
     pn_id = scaleway_vpc_private_network.website_private_network.id
     enable_ipam = true
   }
+  load_balancer {}
 }
 
 resource "scaleway_rdb_acl" "main" {
@@ -115,11 +116,6 @@ resource "scaleway_rdb_acl" "main" {
     ip = "51.158.0.0/15"
     description = "Scaleway public ips"
   }
-
-  acl_rules {
-    ip = "2001:bc8::/32"
-    description = "Scaleway public ips"
-  }
 }
 
 resource "scaleway_rdb_database" "website_database_website" {
@@ -154,7 +150,7 @@ resource "scaleway_container" "website_container" {
   }
 
   secret_environment_variables = {
-    "ConnectionStrings__DefaultConnection" = "${scaleway_rdb_instance.website_database.private_network[0].hostname};Port=${scaleway_rdb_instance.website_database.private_network[0].port};Username=pgadmin;Password=${var.db_admin_password};Database=${scaleway_rdb_database.website_database_website.name};SslMode=require"
+    "ConnectionStrings__DefaultConnection" = "Host=${scaleway_rdb_instance.website_database.load_balancer[0].ip};Port=${scaleway_rdb_instance.website_database.load_balancer[0].port};Username=pgadmin;Password=${var.db_admin_password};Database=${scaleway_rdb_database.website_database_website.name};SslMode=require"
     "ASPNETCORE_GitHub__ClientSecret" = var.github_client_secret
   }
 

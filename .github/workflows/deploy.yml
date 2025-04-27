@@ -56,3 +56,32 @@ jobs:
           file: ./Website/Dockerfile
           push: true
           tags: rg.fr-par.scw.cloud/wildsebastian/website:latest
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.11.0"
+
+      - name: Terraform Init
+        working-directory: ./infrastructure/production
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCALEWAY_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCALEWAY_SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.SCALEWAY_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SCALEWAY_SECRET_KEY }}
+          TF_VAR_db_admin_password: ${{ secrets.DB_ADMIN_PASSWORD }}
+          TF_VAR_github_client_id: ${{ secrets.WEBSITE_GITHUB_CLIENT_ID }}
+          TF_VAR_github_client_secret: ${{ secrets.WEBSITE_GITHUB_CLIENT_SECRET }}
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: ./infrastructure/production
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCALEWAY_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCALEWAY_SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.SCALEWAY_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SCALEWAY_SECRET_KEY }}
+          TF_VAR_db_admin_password: ${{ secrets.DB_ADMIN_PASSWORD }}
+          TF_VAR_github_client_id: ${{ secrets.WEBSITE_GITHUB_CLIENT_ID }}
+          TF_VAR_github_client_secret: ${{ secrets.WEBSITE_GITHUB_CLIENT_SECRET }}
+        run: terraform apply -auto-approve
