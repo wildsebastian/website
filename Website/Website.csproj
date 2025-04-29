@@ -29,7 +29,7 @@
       <PackageReference Include="NodaTime" Version="3.2.2" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="9.0.4" />
-      <PackageReference Include="OpenIddict.AspNetCore" Version="6.2.0" />
+      <PackageReference Include="OpenIddict.AspNetCore" Version="6.2.1" />
       <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="6.2.1" />
     </ItemGroup>
 
