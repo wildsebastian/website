@@ -18,10 +18,10 @@
 
     <ItemGroup>
       <PackageReference Include="Markdig.Signed" Version="0.41.1" />
-      <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.4" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.4" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.4" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
+      <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.5" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.5" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.5" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
@@ -29,8 +29,8 @@
       <PackageReference Include="NodaTime" Version="3.2.2" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="9.0.4" />
-      <PackageReference Include="OpenIddict.AspNetCore" Version="6.2.1" />
-      <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="6.2.1" />
+      <PackageReference Include="OpenIddict.AspNetCore" Version="6.3.0" />
+      <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="6.3.0" />
     </ItemGroup>
 
     <ItemGroup>
